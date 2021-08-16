@@ -5,7 +5,9 @@ import firebase from "../firebase/clientApp";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
+
 import Auth from "../components/Auth";
+import TodoList from "../components/TodoList";
 
 export default function Home() {
   
@@ -19,16 +21,28 @@ export default function Home() {
   // get todos
   const [todos, todosLoading, todosError] = useCollection(firebase.firestore().collection("todos"), {});
   if (!todosLoading && todos) {
-    todos.docs.map((doc) => console.log(doc.data()));
+    todos.docs.map((doc) => console.log(doc.data(), doc.id));
   }
 
   // function
   const addVoteDocument = async (finished: boolean) => {
-    await db.collection("todos").doc("14tBDWfbgj47grvjopb3").set({
+    await db.collection("todos").doc("14tBDWfbgj47grvjopb3").update({
       finished: finished,
-      updatedAt: new Date().toLocaleString()
+      updatedAt: new Date()
     });
   };
+
+  const updateTodo = async (id: string, finished: boolean) => {
+    await db.collection("todos").doc(id).update({
+      finished: finished,
+      updatedAt: new Date()
+    });
+  };
+
+  let props = {
+    todos: todos,
+    updateTodo: updateTodo
+  }
 
   return (
     <div
@@ -48,7 +62,8 @@ export default function Home() {
       {!user && <Auth />}
       {user && (
         <>
-          <h1>Pineapple on Pizza?</h1>
+          <h1>Todo list</h1>
+          <TodoList todos={todos} updateTodo={updateTodo} />
 
           <div style={{ flexDirection: "row", display: "flex" }}>
             <button
