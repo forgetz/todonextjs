@@ -39,10 +39,24 @@ export default function Home() {
     });
   };
 
-  let props = {
-    todos: todos,
-    updateTodo: updateTodo
+  const deleteTodo = async (id: string) => {
+    await db.collection("todos").doc(id).delete().then(()=> {
+      console.log('delete completed');
+    });
+  };
+
+  const newTodo = async (todo: string) => {
+    await db.collection("todos").add({
+      todo: todo,
+      finished: false,
+      createdAt: new Date()
+    });
   }
+
+  // let props = {
+  //   todos: todos,
+  //   updateTodo: updateTodo
+  // }
 
   return (
     <div
@@ -63,7 +77,7 @@ export default function Home() {
       {user && (
         <>
           <h1>Todo list</h1>
-          <TodoList todos={todos} updateTodo={updateTodo} />
+          <TodoList todos={todos} newTodo={newTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} />
 
           <div style={{ flexDirection: "row", display: "flex" }}>
             <button
