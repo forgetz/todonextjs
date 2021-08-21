@@ -1,15 +1,17 @@
+import { Button, Row, Col } from 'antd';
+
 function Todo({id, todo , updateTodo, deleteTodo}) {
-   //console.log("Todo ", id);
+
    return(
-      <div>
+      <Row>
          <span>{todo.todo}, {todo.finished ? "ok" : "no"}, { new Date(todo.createdAt.seconds * 1000).toLocaleDateString()}</span> 
          &nbsp;
-         <span><button onClick={ ()=> updateTodo(id, true) }>Todo True</button></span>
+         <span><Button onClick={ ()=> updateTodo(id, true) }>Todo True</Button></span>
          &nbsp;
-         <span><button onClick={ ()=> updateTodo(id, false) }>Todo False</button></span>
+         <span><Button onClick={ ()=> updateTodo(id, false) }>Todo False</Button></span>
          &nbsp;
-         <span><button onClick={ ()=> deleteTodo(id) }>Delete</button></span>
-      </div>
+         <span><Button onClick={ ()=> deleteTodo(id) }>Delete</Button></span>
+      </Row>
    );
 }
 

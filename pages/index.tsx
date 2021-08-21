@@ -8,6 +8,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 
 import Auth from "../components/Auth";
 import TodoList from "../components/TodoList";
+import { Row, Col, Divider } from "antd";
 
 export default function Home() {
   
@@ -25,13 +26,6 @@ export default function Home() {
   }
 
   // function
-  const addVoteDocument = async (finished: boolean) => {
-    await db.collection("todos").doc("14tBDWfbgj47grvjopb3").update({
-      finished: finished,
-      updatedAt: new Date()
-    });
-  };
-
   const updateTodo = async (id: string, finished: boolean) => {
     await db.collection("todos").doc(id).update({
       finished: finished,
@@ -76,25 +70,12 @@ export default function Home() {
       {!user && <Auth />}
       {user && (
         <>
-          <h1>Todo list</h1>
-          <TodoList todos={todos} newTodo={newTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} />
-
-          <div style={{ flexDirection: "row", display: "flex" }}>
-            <button
-              style={{ fontSize: 32, marginRight: 8 }}
-              onClick={() => addVoteDocument(true)}
-            >
-              ✔️🍍🍕
-            </button>
-          </div>
-          <div style={{ flexDirection: "row", display: "flex" }}>
-            <button
-              style={{ fontSize: 32, marginRight: 8 }}
-              onClick={() => addVoteDocument(false)}
-            >
-              ❌🍍🍕
-            </button>
-          </div>
+          <Row>
+            <h1>Todo list</h1>
+          </Row>
+          <Row>
+            <TodoList todos={todos} newTodo={newTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} />
+          </Row>
         </>
       )}
     </div>
